@@ -12,10 +12,14 @@ function add(numbers) {
 
     const { delimiter, numbers: numString } = parseDelimiterAndNumbers(numbers);
 
-    return numString
-        .split(delimiter)
-        .map(num => parseInt(num, 10))
-        .reduce((sum, num) => sum + num, 0);
+    const nums = numString.split(delimiter).map(num => parseInt(num, 10));
+
+    const negatives = nums.filter(n => n < 0);
+    if (negatives.length > 0) {
+        throw new Error(`negatives not allowed: ${negatives.join(",")}`);
+    }
+
+    return nums.reduce((sum, num) => sum + num, 0);
 }
 
 module.exports = add;
