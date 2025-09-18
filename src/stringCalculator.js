@@ -14,6 +14,10 @@ function validateNoNegatives(nums) {
     }
 }
 
+function filterLargeNumbers(nums) {
+    return nums.filter(n => n <= 1000);
+}
+
 function add(numbers) {
     if (numbers === "") return 0;
 
@@ -21,12 +25,11 @@ function add(numbers) {
 
     const nums = numString
         .split(delimiter)
-        .map(num => parseInt(num, 10))
-        .filter(num => num <= 1000); // ignore >1000
+        .map(num => parseInt(num, 10));
 
     validateNoNegatives(nums);
 
-    return nums.reduce((sum, num) => sum + num, 0);
+    return filterLargeNumbers(nums).reduce((sum, num) => sum + num, 0);
 }
 
 module.exports = add;
