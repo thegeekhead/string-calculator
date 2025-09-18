@@ -1,12 +1,11 @@
 function add(numbers) {
     if (numbers === '') return 0;
 
-    // Single number case
-    if (!numbers.includes(',')) {
-        return Number(numbers);
+    const parts = numbers.split(',');
+    if (parts.length === 1) {
+        return Number(parts[0]);
     }
 
-    // Other cases will be added later
     return 0;
 }
 
