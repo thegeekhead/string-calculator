@@ -6,6 +6,10 @@ function add(numbers) {
         return Number(parts[0]);
     }
 
+    if (parts.length === 2) {
+        return Number(parts[0]) + Number(parts[1]);
+    }
+
     return 0;
 }
 
