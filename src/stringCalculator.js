@@ -3,24 +3,20 @@ function escapeRegex(str) {
 }
 
 function parseDelimiterAndNumbers(input) {
-    if (input.startsWith("//")) {
-        const [delimiterLine, numbers] = input.split("\n");
-
-        let delimiter;
-        const match = delimiterLine.match(/\[(.+)\]/);
-
-        if (match) {
-            // e.g. //[***] → extract "***"
-            delimiter = new RegExp(escapeRegex(match[1]), "g");
-        } else {
-            // single character delimiter
-            delimiter = new RegExp(escapeRegex(delimiterLine.slice(2)), "g");
-        }
-
-        return { delimiter, numbers };
+    if (!input.startsWith("//")) {
+        return { delimiter: /[\n,]/, numbers: input };
     }
 
-    return { delimiter: /[\n,]/, numbers: input };
+    const [delimiterLine, numbers] = input.split("\n");
+
+    // Match [ ... ] if present
+    const match = delimiterLine.match(/\[(.+)\]/);
+    const delimiterPattern = match ? match[1] : delimiterLine.slice(2);
+
+    return {
+        delimiter: new RegExp(escapeRegex(delimiterPattern), "g"),
+        numbers,
+    };
 }
 
 function validateNoNegatives(nums) {
