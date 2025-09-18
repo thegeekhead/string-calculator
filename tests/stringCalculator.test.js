@@ -16,3 +16,8 @@ test('should return the sum of an unknown amount of numbers', () => {
     expect(add("1,2,3")).toBe(6);
     expect(add("4,5,6,7")).toBe(22);
 });
+
+test('should handle newlines as delimiters along with commas', () => {
+    expect(add("1\n2,3")).toBe(6);
+    expect(add("4\n5\n6")).toBe(15);
+});
