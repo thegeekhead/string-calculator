@@ -4,19 +4,22 @@ function escapeRegex(str) {
 
 function parseDelimiterAndNumbers(input) {
     if (!input.startsWith("//")) {
-        return { delimiter: /[\n,]/, numbers: input };
+        return { delimiters: [",", "\n"], numbers: input };
     }
 
     const [delimiterLine, numbers] = input.split("\n");
 
-    // Match [ ... ] if present
-    const match = delimiterLine.match(/\[(.+)\]/);
-    const delimiterPattern = match ? match[1] : delimiterLine.slice(2);
+    // Match all [ ... ] occurrences
+    const matches = delimiterLine.match(/\[.*?\]/g);
+    let delimiters;
 
-    return {
-        delimiter: new RegExp(escapeRegex(delimiterPattern), "g"),
-        numbers,
-    };
+    if (matches) {
+        delimiters = matches.map(m => m.slice(1, -1)); // strip []
+    } else {
+        delimiters = [delimiterLine.slice(2)];
+    }
+
+    return { delimiters, numbers };
 }
 
 function validateNoNegatives(nums) {
@@ -33,10 +36,15 @@ function filterLargeNumbers(nums) {
 function add(numbers) {
     if (numbers === "") return 0;
 
-    const { delimiter, numbers: numString } = parseDelimiterAndNumbers(numbers);
+    const { delimiters, numbers: numString } = parseDelimiterAndNumbers(numbers);
+
+    const delimiterRegex = new RegExp(
+        delimiters.map(d => escapeRegex(d)).join("|"),
+        "g"
+    );
 
     const nums = numString
-        .split(delimiter)
+        .split(delimiterRegex)
         .map(n => parseInt(n, 10))
         .filter(n => !isNaN(n));
 
