@@ -1,8 +1,10 @@
 function add(numbers) {
     if (numbers === "") return 0;
 
+    const delimiters = /[\n,]/;
+
     return numbers
-        .split(/[\n,]/) // split by comma OR newline
+        .split(delimiters)
         .map(num => parseInt(num, 10))
         .reduce((sum, num) => sum + num, 0);
 }
