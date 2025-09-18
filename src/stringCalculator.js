@@ -1,7 +1,10 @@
+/**
+ * Add numbers from a string.
+ * Current: only implements empty string case reliably.
+ */
 function add(numbers) {
-    // minimal implementation to satisfy the empty-string test
     if (numbers === '') return 0;
-    // not handling other cases yet
+    // Keep behavior explicit for future steps
     return Number(numbers);
 }
 
