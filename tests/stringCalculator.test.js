@@ -26,3 +26,8 @@ test('should support custom single-character delimiter', () => {
     expect(add("//;\n1;2")).toBe(3);
     expect(add("//|\n4|5|6")).toBe(15);
 });
+
+test('should throw an exception for negative numbers', () => {
+    expect(() => add("1,-2,3")).toThrow("negatives not allowed: -2");
+    expect(() => add("//;\n-1;2;-3")).toThrow("negatives not allowed: -1,-3");
+});
