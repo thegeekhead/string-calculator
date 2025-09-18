@@ -1,9 +1,25 @@
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function parseDelimiterAndNumbers(input) {
     if (input.startsWith("//")) {
         const [delimiterLine, numbers] = input.split("\n");
-        const delimiter = new RegExp(`[${delimiterLine.slice(2)}]`);
+
+        let delimiter;
+        const match = delimiterLine.match(/\[(.+)\]/);
+
+        if (match) {
+            // e.g. //[***] → extract "***"
+            delimiter = new RegExp(escapeRegex(match[1]), "g");
+        } else {
+            // single character delimiter
+            delimiter = new RegExp(escapeRegex(delimiterLine.slice(2)), "g");
+        }
+
         return { delimiter, numbers };
     }
+
     return { delimiter: /[\n,]/, numbers: input };
 }
 
@@ -25,11 +41,12 @@ function add(numbers) {
 
     const nums = numString
         .split(delimiter)
-        .map(num => parseInt(num, 10));
+        .map(n => parseInt(n, 10))
+        .filter(n => !isNaN(n));
 
     validateNoNegatives(nums);
 
-    return filterLargeNumbers(nums).reduce((sum, num) => sum + num, 0);
+    return filterLargeNumbers(nums).reduce((sum, n) => sum + n, 0);
 }
 
 module.exports = add;
