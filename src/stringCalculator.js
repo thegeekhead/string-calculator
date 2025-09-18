@@ -19,7 +19,10 @@ function add(numbers) {
 
     const { delimiter, numbers: numString } = parseDelimiterAndNumbers(numbers);
 
-    const nums = numString.split(delimiter).map(num => parseInt(num, 10));
+    const nums = numString
+        .split(delimiter)
+        .map(num => parseInt(num, 10))
+        .filter(num => num <= 1000); // ignore >1000
 
     validateNoNegatives(nums);
 
