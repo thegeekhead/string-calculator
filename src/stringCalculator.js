@@ -9,15 +9,10 @@ function parseDelimiterAndNumbers(input) {
 
     const [delimiterLine, numbers] = input.split("\n");
 
-    // Match all [ ... ] occurrences
     const matches = delimiterLine.match(/\[.*?\]/g);
-    let delimiters;
-
-    if (matches) {
-        delimiters = matches.map(m => m.slice(1, -1)); // strip []
-    } else {
-        delimiters = [delimiterLine.slice(2)];
-    }
+    const delimiters = matches
+        ? matches.map(m => m.slice(1, -1))
+        : [delimiterLine.slice(2)];
 
     return { delimiters, numbers };
 }
