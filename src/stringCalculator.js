@@ -7,6 +7,13 @@ function parseDelimiterAndNumbers(input) {
     return { delimiter: /[\n,]/, numbers: input };
 }
 
+function validateNoNegatives(nums) {
+    const negatives = nums.filter(n => n < 0);
+    if (negatives.length > 0) {
+        throw new Error(`negatives not allowed: ${negatives.join(",")}`);
+    }
+}
+
 function add(numbers) {
     if (numbers === "") return 0;
 
@@ -14,10 +21,7 @@ function add(numbers) {
 
     const nums = numString.split(delimiter).map(num => parseInt(num, 10));
 
-    const negatives = nums.filter(n => n < 0);
-    if (negatives.length > 0) {
-        throw new Error(`negatives not allowed: ${negatives.join(",")}`);
-    }
+    validateNoNegatives(nums);
 
     return nums.reduce((sum, num) => sum + num, 0);
 }
